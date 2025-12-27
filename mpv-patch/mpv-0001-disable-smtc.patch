@@ -6,7 +6,6 @@ index 0000000..0000000 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -1,7 +1,6 @@
-  # Windows-specific source files
   windows_sources = files(
       'osdep/windows/terminal.c',
 -     'osdep/windows/smtc.cpp',
