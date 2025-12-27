@@ -1,0 +1,15 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+Subject: [PATCH] disable SMTC on Windows
+
+diff --git a/meson.build b/meson.build
+index 0000000..0000000 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1,7 +1,6 @@
+  # Windows-specific source files
+  windows_sources = files(
+      'osdep/windows/terminal.c',
+-     'osdep/windows/smtc.cpp',
+      'osdep/windows/w32_keyboard.c',
+      'osdep/windows/w32_common.c',
+      'osdep/windows/w32_displayconfig.c'
