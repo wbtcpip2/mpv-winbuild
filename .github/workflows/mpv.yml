@@ -200,6 +200,11 @@ jobs:
           repository: shinchiro/mpv-winbuild-cmake
           path: mpv-winbuild-cmake
           fetch-depth: 0
+      - name: Invalidate mpv cache
+        run: |
+          echo "Removing cached mpv sources for both architectures"
+          rm -rf build32/packages/mpv-prefix
+          rm -rf build64/packages/mpv-prefix
       - name: Prepare
         run: |
           echo "sha=${{ needs.params.outputs.sha }}" >> $GITHUB_ENV
