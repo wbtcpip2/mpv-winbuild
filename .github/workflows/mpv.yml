@@ -597,7 +597,39 @@ jobs:
             }
             await core.summary.addDetails('Packages Version',packages_table).write();
 
+- name: DEBUG — Verifica cartella patch
+  run: |
+    echo "=== CONTENUTO patch/ ==="
+    ls -R patch || echo "patch directory NOT FOUND"
+    echo "=== CONTENUTO patch/mpv/ ==="
+    ls -R patch/mpv || echo "patch/mpv directory NOT FOUND"
 
+- name: DEBUG — Verifica configurazione CMake
+  run: |
+    echo "=== CMakeCache.txt (patch flags) ==="
+    grep -R "PATCH" -n CMakeCache.txt || echo "No PATCH flags found in CMakeCache"
+
+- name: DEBUG — Verifica sorgenti mpv estratti
+  run: |
+    echo "=== LISTA build32/packages/mpv-prefix/src/ ==="
+    ls -R build32/packages/mpv-prefix/src || echo "mpv-prefix/src NOT FOUND"
+    echo "=== LISTA build32/packages/mpv-prefix/src/mpv ==="
+    ls -R build32/packages/mpv-prefix/src/mpv || echo "mpv source directory NOT FOUND"
+
+- name: DEBUG — Controllo file meson_options.txt
+  run: |
+    echo "=== meson_options.txt ==="
+    grep -R "vapoursynth" -n build32/packages/mpv-prefix/src/mpv/meson_options.txt || echo "vapoursynth not found"
+    grep -R "lua" -n build32/packages/mpv-prefix/src/mpv/meson_options.txt || echo "lua not found"
+    grep -R "wasapi" -n build32/packages/mpv-prefix/src/mpv/meson_options.txt || echo "wasapi not found"
+
+- name: DEBUG — Controllo file meson.build
+  run: |
+    echo "=== meson.build ==="
+    grep -R "smtc.cpp" -n build32/packages/mpv-prefix/src/mpv/meson.build || echo "smtc.cpp NOT FOUND (good)"
+    grep -R "terminal.c" -n build32/packages/mpv-prefix/src/mpv/meson.build || echo "terminal.c not found"
+    grep -R "executable('mpv'" -n build32/packages/mpv-prefix/src/mpv/meson.build || echo "mpv executable not found"
+    
   publish_release:
     name: Publish release
     needs: [build_mpv,params]
