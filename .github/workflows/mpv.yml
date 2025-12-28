@@ -203,16 +203,12 @@ jobs:
       - name: Patch mpv.cmake
         run: |
           sed -i "s/meson setup/meson setup -Dwin32-smtc=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Dvulkan=enabled/-Dvulkan=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Dspirv-cross=enabled/-Dspirv-cross=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Dlua=enabled/-Dlua=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Djavascript=enabled/-Djavascript=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Dsdl2-gamepad=enabled/-Dsdl2-gamepad=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Dlibarchive=enabled/-Dlibarchive=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Dlibbluray=enabled/-Dlibbluray=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Ddvdnav=enabled/-Ddvdnav=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Drubberband=enabled/-Drubberband=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Dvapoursynth=enabled/-Dvapoursynth=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Dpdf-build=enabled/-Dpdf-build=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           # Rimuove SOLO la riga del PDF senza toccare le altre
           sed -i '/mpv.pdf/d' mpv-winbuild-cmake/packages/mpv.cmake
