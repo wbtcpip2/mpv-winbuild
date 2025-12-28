@@ -215,6 +215,7 @@ jobs:
           sed -i "s/-Dlcms2=enabled/-Dlcms2=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Dvapoursynth=enabled/-Dvapoursynth=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Dpdf-build=enabled/-Dpdf-build=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i 's/mpv.pdf/# mpv.pdf/' mpv-winbuild-cmake/packages/mpv.cmake
 
       - name: Prepare
         run: |
