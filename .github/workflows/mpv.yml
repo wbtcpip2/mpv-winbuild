@@ -212,7 +212,6 @@ jobs:
           sed -i "s/-Dlibbluray=enabled/-Dlibbluray=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Ddvdnav=enabled/-Ddvdnav=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Drubberband=enabled/-Drubberband=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Dlcms2=enabled/-Dlcms2=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Dvapoursynth=enabled/-Dvapoursynth=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Dpdf-build=enabled/-Dpdf-build=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           # Rimuove SOLO la riga del PDF senza toccare le altre
