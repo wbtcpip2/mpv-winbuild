@@ -384,6 +384,9 @@ jobs:
           }
           set -x
           ${{ inputs.command }}
+      - name: Debug path
+        run: |
+          pwd ls -R .
       - name: Build
         id: build
         shell: bash
