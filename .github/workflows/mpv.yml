@@ -203,7 +203,6 @@ jobs:
       - name: Patch mpv.cmake
         run: |
           sed -i "s/meson setup/meson setup -Dwin32-smtc=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i 's/meson setup/meson setup -Dbuild-player=false/' mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Dlua=enabled/-Dlua=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Djavascript=enabled/-Djavascript=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Dsdl2-gamepad=enabled/-Dsdl2-gamepad=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
@@ -213,10 +212,7 @@ jobs:
           sed -i "s/-Dpdf-build=enabled/-Dpdf-build=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           # Rimuove SOLO la riga del PDF senza toccare le altre
           sed -i '/mpv.pdf/d' mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i '/mpv.exe/d' mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i '/mpv.com/d' mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i '/mpv.debug/d' mpv-winbuild-cmake/packages/mpv.cmake
-
+          
 
       - name: Prepare
         run: |
