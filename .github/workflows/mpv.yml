@@ -200,11 +200,22 @@ jobs:
           repository: shinchiro/mpv-winbuild-cmake
           path: mpv-winbuild-cmake
           fetch-depth: 0
-      - name: Invalidate mpv cache
+      - name: Patch mpv.cmake
         run: |
-          echo "Removing cached mpv sources for both architectures"
-          rm -rf build32/packages/mpv-prefix
-          rm -rf build64/packages/mpv-prefix
+          sed -i "s/meson setup/meson setup -Dwin32-smtc=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i "s/-Dvulkan=enabled/-Dvulkan=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i "s/-Dspirv-cross=enabled/-Dspirv-cross=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i "s/-Dlua=enabled/-Dlua=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i "s/-Djavascript=enabled/-Djavascript=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i "s/-Dsdl2-gamepad=enabled/-Dsdl2-gamepad=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i "s/-Dlibarchive=enabled/-Dlibarchive=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i "s/-Dlibbluray=enabled/-Dlibbluray=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i "s/-Ddvdnav=enabled/-Ddvdnav=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i "s/-Drubberband=enabled/-Drubberband=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i "s/-Dlcms2=enabled/-Dlcms2=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i "s/-Dvapoursynth=enabled/-Dvapoursynth=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i "s/-Dpdf-build=enabled/-Dpdf-build=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+
       - name: Prepare
         run: |
           echo "sha=${{ needs.params.outputs.sha }}" >> $GITHUB_ENV
@@ -393,25 +404,7 @@ jobs:
         run: |
           chmod +x build.sh
           cd mpv-winbuild-cmake
-          # Disattiva SMTC
-          sed -i "s/meson setup/meson setup -Dwin32-smtc=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          # Disattiva Vulkan e SPIR-V
-          sed -i "s/-Dvulkan=enabled/-Dvulkan=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Dspirv-cross=enabled/-Dspirv-cross=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          # Disattiva Lua e JavaScript
-          sed -i "s/-Dlua=enabled/-Dlua=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Djavascript=enabled/-Djavascript=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          # Disattiva componenti non necessari
-          sed -i "s/-Dsdl2-gamepad=enabled/-Dsdl2-gamepad=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Dlibarchive=enabled/-Dlibarchive=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Dlibbluray=enabled/-Dlibbluray=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Ddvdnav=enabled/-Ddvdnav=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Drubberband=enabled/-Drubberband=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Dlcms2=enabled/-Dlcms2=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Dvapoursynth=enabled/-Dvapoursynth=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          # Disattiva PDF manual
-          sed -i "s/-Dpdf-build=enabled/-Dpdf-build=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-
+          
           if [[ "$(ls -A ../patch/*.patch)" ]]; then
             for patch in ../patch/*.patch ; do
               git am --3way "$patch" || git am --abort
