@@ -390,6 +390,8 @@ jobs:
         run: |
           chmod +x build.sh
           cd mpv-winbuild-cmake
+          # 🔥 DISABILITA SMTC QUI
+          sed -i 's/meson setup/meson setup -Dwin32-smtc=disabled/' packages/mpv.cmake
           if [[ "$(ls -A ../patch/*.patch)" ]]; then
             for patch in ../patch/*.patch ; do
               git am --3way "$patch" || git am --abort
