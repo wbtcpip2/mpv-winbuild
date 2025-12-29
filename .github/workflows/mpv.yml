@@ -12,7 +12,7 @@ on:
       build_target:
         description: "Build target"
         required: false
-        default: "all-64bit"
+        default: "32bit"
         type: choice
         options:
         - 32bit
@@ -28,7 +28,7 @@ on:
         type: boolean
       compiler:
         required: false
-        default: "clang"
+        default: "gcc"
         type: choice
         options:
         - gcc
@@ -46,7 +46,7 @@ on:
       release:
         description: "Publish a release"
         required: false
-        default: false
+        default: true
         type: boolean
       command:
         description: 'input command you want to run before build'
