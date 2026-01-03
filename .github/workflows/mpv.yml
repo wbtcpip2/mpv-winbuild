@@ -233,7 +233,12 @@ jobs:
           sed -i 's/add_subdirectory(subrandr)//' mpv-winbuild-cmake/packages/mpv.cmake
           sed -i 's/subrandr//g' mpv-winbuild-cmake/packages/mpv.cmake
           sed -i '/subrandr/d' mpv-winbuild-cmake/packages/CMakeLists.txt
-
+          # Svuota il file subrandr.cmake
+          echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
+          # Rimuove subrandr da mpv-release.cmake (punto critico)
+          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/mpv-release.cmake
+          # Rimuove subrandr da CMakeLists.txt (se presente)
+          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/CMakeLists.txt
           # Svuota il file subrandr.cmake
           echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
           # Rimuove SOLO la riga del PDF
