@@ -221,7 +221,7 @@ jobs:
 
           # Disattiva SMTC
           sed -i 's/meson setup/meson setup -Dwin32-smtc=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
-
+          
           # Disattiva componenti inutili
           sed -i 's/-Dlua=enabled/-Dlua=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
           sed -i 's/-Djavascript=enabled/-Djavascript=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
@@ -237,13 +237,15 @@ jobs:
           sed -i '/mpv.pdf/d' mpv-winbuild-cmake/packages/mpv.cmake
           
           # Rimuove subrandr da tutti i punti corretti
-          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/mpv-release.cmake
+          sed -i '/ExternalProject_Add(.*subrandr/d' mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/mpv.cmake
           sed -i '/subrandr/d' mpv-winbuild-cmake/packages/CMakeLists.txt
-          sed -i '/add_subdirectory(subrandr)/d' mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/mpv-release.cmake
           
           # Svuota il file subrandr.cmake
           echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
-                    
+          
+                
       - name: Prepare
         run: |
           echo "sha=${{ needs.params.outputs.sha }}" >> $GITHUB_ENV
