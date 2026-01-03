@@ -220,30 +220,30 @@ jobs:
           # sed -i '/mpv.pdf/d' mpv-winbuild-cmake/packages/mpv.cmake
 
           # Disattiva SMTC
-          sed -i "s/meson setup/meson setup -Dwin32-smtc=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i 's/meson setup/meson setup -Dwin32-smtc=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
+
           # Disattiva componenti inutili
-          sed -i "s/-Dlua=enabled/-Dlua=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Djavascript=enabled/-Djavascript=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Dsdl2-gamepad=enabled/-Dsdl2-gamepad=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Dlibarchive=enabled/-Dlibarchive=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Dlibbluray=enabled/-Dlibbluray=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Ddvdnav=enabled/-Ddvdnav=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i "s/-Dpdf-build=enabled/-Dpdf-build=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          # Neutralizza completamente subrandr
-          sed -i 's/add_subdirectory(subrandr)//' mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i 's/subrandr//g' mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/CMakeLists.txt
-          # Svuota il file subrandr.cmake
-          echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
-          # Rimuove subrandr da mpv-release.cmake (punto critico)
-          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/mpv-release.cmake
-          # Rimuove subrandr da CMakeLists.txt (se presente)
-          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/CMakeLists.txt
-          # Svuota il file subrandr.cmake
-          echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
+          sed -i 's/-Dlua=enabled/-Dlua=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i 's/-Djavascript=enabled/-Djavascript=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i 's/-Dsdl2-gamepad=enabled/-Dsdl2-gamepad=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i 's/-Dlibarchive=enabled/-Dlibarchive=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i 's/-Dlibbluray=enabled/-Dlibbluray=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i 's/-Ddvdnav=enabled/-Ddvdnav=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
+          
+          # Disattiva pdf-build in modo sicuro
+          sed -i 's/-Dpdf-build=[^ ]*/-Dpdf-build=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
+          
           # Rimuove SOLO la riga del PDF
           sed -i '/mpv.pdf/d' mpv-winbuild-cmake/packages/mpv.cmake
-
+          
+          # Rimuove subrandr da tutti i punti corretti
+          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/mpv-release.cmake
+          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/CMakeLists.txt
+          sed -i '/add_subdirectory(subrandr)/d' mpv-winbuild-cmake/packages/mpv.cmake
+          
+          # Svuota il file subrandr.cmake
+          echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
+                    
       - name: Prepare
         run: |
           echo "sha=${{ needs.params.outputs.sha }}" >> $GITHUB_ENV
