@@ -433,23 +433,38 @@ jobs:
       - name: Debug path
         run: |
           pwd ls -R .
+       
       - name: Build
         id: build
         shell: bash
         run: |
           chmod +x build.sh
           cd mpv-winbuild-cmake
-          
-          if [[ "$(ls -A ../patch/*.patch)" ]]; then
+
+          # PATCH build.sh PRIMA di eseguirlo
+          sed -i "s|cmake -Wno-dev|cmake -Wno-dev; echo 'Patching FFmpeg configure...'; find \"\$buildroot/build\$bit\" -type f -exec sed -i 's/--enable-libshaderc/--disable-libshaderc/g' {} \;|g" build.sh
+
+          # VERIFICA PATCH
+          echo '=== PATCH CHECK ==='
+          grep -n "Patching FFmpeg configure" build.sh || echo "Patch NON trovata"
+
+          # Applica patch PR
+          if [[ "$(ls -A ../patch/*.patch 2>/dev/null)" ]]; then
             for patch in ../patch/*.patch ; do
               git am --3way "$patch" || git am --abort
             done
           fi
+
           if [ "${{ matrix.lgpl }}" = "true" ]; then
             git am --3way ../compile-lgpl-libmpv.patch
           fi
+
+          # ESEGUI build.sh (che ora contiene la patch)
           bash ../build.sh -t '${{ matrix.bit }}' -c '${{ inputs.compiler }}' -s "${{ matrix.lgpl == true && 'true' || 'false' }}"
-      
+
+
+
+
 
       - name: Collect logs
         if: ${{ always() }}
