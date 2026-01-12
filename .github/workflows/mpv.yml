@@ -244,7 +244,13 @@ jobs:
           # Svuota il file subrandr.cmake
           echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
           
-                
+      - name: Patch FFmpeg (disable Vulkan for i686)
+        run: |
+          if [ -f mpv-winbuild-cmake/presets/ffmpeg-options-i686.txt ]; then
+            echo "--disable-vulkan" >> mpv-winbuild-cmake/presets/ffmpeg-options-i686.txt
+            echo "--disable-libshaderc" >> mpv-winbuild-cmake/presets/ffmpeg-options-i686.txt
+          fi          
+      
       - name: Prepare
         run: |
           echo "sha=${{ needs.params.outputs.sha }}" >> $GITHUB_ENV
