@@ -442,11 +442,11 @@ jobs:
           cd mpv-winbuild-cmake
 
           # PATCH build.sh PRIMA di eseguirlo
-          sed -i "s|cmake -Wno-dev|cmake -Wno-dev; echo 'Patching FFmpeg configure...'; find \"\$buildroot/build\$bit\" -type f -exec sed -i 's/--enable-libshaderc/--disable-libshaderc/g' {} \;|g" build.sh
+          sed -i "s|cmake -Wno-dev|cmake -Wno-dev; echo 'Patching FFmpeg configure...'; find \"\$buildroot/build\$bit\" -type f -exec sed -i 's/--enable-libshaderc/--disable-libshaderc/g' {} \;|g" ../build.sh
 
           # VERIFICA PATCH
           echo '=== PATCH CHECK ==='
-          grep -n "Patching FFmpeg configure" build.sh || echo "Patch NON trovata"
+          grep -n "Patching FFmpeg configure" ../build.sh || echo "Patch NON trovata"
 
           # Applica patch PR
           if [[ "$(ls -A ../patch/*.patch 2>/dev/null)" ]]; then
