@@ -244,15 +244,12 @@ jobs:
           # Svuota il file subrandr.cmake
           echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
           
-      - name: Disable libshaderc in FFmpeg (both locations)
+      - name: Locate real FFmpeg configure
         run: |
-          sed -i 's/--enable-libshaderc/--disable-libshaderc/' mpv-winbuild-cmake/packages/ffmpeg.cmake || true
-          sed -i 's/--enable-libshaderc/--disable-libshaderc/' mpv-winbuild-cmake/src_packages/ffmpeg/ffmpeg.cmake || true
-
-      - name: Show final FFmpeg configure command
-        run: |
-          grep -R "enable-libshaderc" -n mpv-winbuild-cmake || true
-          grep -R "disable-libshaderc" -n mpv-winbuild-cmake || true
+          echo "=== Searching in build32 ==="
+          grep -R "enable-libshaderc" -n mpv-winbuild-cmake/build32 || true
+          echo "=== Searching in src_packages ==="
+          grep -R "enable-libshaderc" -n mpv-winbuild-cmake/src_packages || true
 
       - name: Prepare
         run: |
