@@ -244,14 +244,10 @@ jobs:
           # Svuota il file subrandr.cmake
           echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
           
-      - name: Patch FFmpeg configure (disable Vulkan)
+      - name: Patch FFmpeg to disable shaderc only
         run: |
-          sed -i 's#\(${FFMPEG_SRC_DIR}/configure[^"]*\)#\1 --disable-vulkan --disable-libshaderc#' mpv-winbuild-cmake/packages/ffmpeg.cmake || true
-          sed -i 's#\(ffmpeg_configure .*\\\)#\1 --disable-vulkan --disable-libshaderc\\#' mpv-winbuild-cmake/packages/ffmpeg.cmake || true
+          sed -i 's/--enable-libshaderc/--disable-libshaderc/g' mpv-winbuild-cmake/packages/ffmpeg.cmake
 
-      - name: Show patched ffmpeg.cmake
-        run: |
-          sed -n '1,220p' mpv-winbuild-cmake/packages/ffmpeg.cmake | grep -n "configure" -n
 
 
       
