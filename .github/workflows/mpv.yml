@@ -436,7 +436,8 @@ jobs:
 
           # PATCH build.sh PRIMA di eseguirlo
           sed -i "s|cmake -Wno-dev|cmake -Wno-dev; echo 'Patching FFmpeg configure...'; find \"\$buildroot/build\$bit\" -type f -exec sed -i 's/--enable-libshaderc/--disable-libshaderc/g' {} \;|g" ../build.sh
-          sed -i "s|cmake -Wno-dev|cmake -Wno-dev; echo 'Patching FFmpeg vulkan...'; find \"\$buildroot/build\$bit\" -type f -exec sed -i 's/--enable-vulkan/--disable-vulkan/g' {} \;|g" ../build.sh
+          sed -i "s|--enable-vulkan|--disable-vulkan|g" ../build.sh
+
           
           # VERIFICA PATCH
           echo '=== PATCH CHECK ==='
