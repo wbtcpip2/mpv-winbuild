@@ -244,13 +244,6 @@ jobs:
           # Svuota il file subrandr.cmake
           echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
           
-      - name: Locate real FFmpeg configure
-        run: |
-          echo "=== Searching in build32 ==="
-          grep -R "enable-libshaderc" -n mpv-winbuild-cmake/build32 || true
-          echo "=== Searching in src_packages ==="
-          grep -R "enable-libshaderc" -n mpv-winbuild-cmake/src_packages || true
-
       - name: Prepare
         run: |
           echo "sha=${{ needs.params.outputs.sha }}" >> $GITHUB_ENV
@@ -442,7 +435,7 @@ jobs:
           cd mpv-winbuild-cmake
 
           # PATCH build.sh PRIMA di eseguirlo
-          sed -i "s|cmake -Wno-dev|cmake -Wno-dev; echo 'Patching FFmpeg configure...'; find \"\$buildroot/build\$bit\" -type f -exec sed -i 's/--enable-libshaderc/--disable-libshaderc/g' {} \;|g" ../build.sh
+          sed -i "s|cmake -Wno-dev|cmake -Wno-dev; echo 'Patching FFmpeg (shaderc+vulkan)...'; find \"\$buildroot/build\$bit\" -type f -exec sed -i 's/--enable-libshaderc/--disable-libshaderc/g' {} \; ; find \"\$buildroot/build\$bit\" -type f -exec sed -i 's/--enable-vulkan/--disable-vulkan/g' {} \;|g" ../build.sh
 
           # VERIFICA PATCH
           echo '=== PATCH CHECK ==='
