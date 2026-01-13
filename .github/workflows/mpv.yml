@@ -435,13 +435,14 @@ jobs:
           cd mpv-winbuild-cmake
 
           # PATCH build.sh PRIMA di eseguirlo
-          sed -i "s|cmake -Wno-dev|echo 'Patching FFmpeg (shaderc+vulkan)...'; find \"\$buildroot/build\$bit\" -type f -exec sed -i 's/--enable-libshaderc/--disable-libshaderc/g' {} \; && find \"\$buildroot/build\$bit\" -type f -exec sed -i 's/--enable-vulkan/--disable-vulkan/g' {} \; ; cmake -Wno-dev|g" ../build.sh
-
-
+          echo 'Patching FFmpeg (shaderc+vulkan)...'
+          sed -i 's/--enable-libshaderc/--disable-libshaderc/g; s/--enable-vulkan/--disable-vulkan/g' build.sh
 
           # VERIFICA PATCH
           echo '=== PATCH CHECK ==='
-          grep -n "Patching FFmpeg configure" ../build.sh || echo "Patch NON trovata"
+          grep -n "disable-libshaderc" build.sh || echo "Patch NON trovata"
+          grep -n "disable-vulkan" build.sh || echo "Patch NON trovata"
+
 
           # Applica patch PR
           if [[ "$(ls -A ../patch/*.patch 2>/dev/null)" ]]; then
