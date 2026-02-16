@@ -220,14 +220,6 @@ jobs:
           # Disattiva SMTC
           sed -i 's/meson setup/meson setup -Dwin32-smtc=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
           
-          # Disattiva componenti inutili
-          sed -i 's/-Dlua=enabled/-Dlua=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i 's/-Djavascript=enabled/-Djavascript=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i 's/-Dsdl2-gamepad=enabled/-Dsdl2-gamepad=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i 's/-Dlibarchive=enabled/-Dlibarchive=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i 's/-Dlibbluray=enabled/-Dlibbluray=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i 's/-Ddvdnav=enabled/-Ddvdnav=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
-          
           # Disattiva pdf-build in modo sicuro
           sed -i 's/-Dpdf-build=[^ ]*/-Dpdf-build=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
           
