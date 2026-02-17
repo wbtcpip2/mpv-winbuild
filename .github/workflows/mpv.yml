@@ -208,6 +208,7 @@ jobs:
           # sed -i "s/-Dlibbluray=enabled/-Dlibbluray=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           # sed -i "s/-Ddvdnav=enabled/-Ddvdnav=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           # sed -i "s/-Dpdf-build=enabled/-Dpdf-build=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          # sed -i "s/-Dlua=enabled/-Dlua=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           # Neutralizza completamente il pacchetto subrandr
           # sed -i 's/add_subdirectory(subrandr)//' mpv-winbuild-cmake/packages/mpv.cmake
           # sed -i 's/subrandr//g' mpv-winbuild-cmake/packages/mpv.cmake
