@@ -235,6 +235,9 @@ jobs:
           
           # Svuota il file subrandr.cmake
           echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
+
+          # Forza OpenSSL 3.2.0 (crea il file se non esiste)
+          echo "openssl=3.2.0" > mpv-winbuild-cmake/packages/versions.txt
           
       - name: Prepare
         run: |
