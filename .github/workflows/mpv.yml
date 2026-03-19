@@ -12,7 +12,7 @@ on:
       build_target:
         description: "Build target"
         required: false
-        default: "all-64bit"
+        default: "32bit"
         type: choice
         options:
         - 32bit
@@ -28,7 +28,7 @@ on:
         type: boolean
       compiler:
         required: false
-        default: "clang"
+        default: "gcc"
         type: choice
         options:
         - gcc
@@ -46,7 +46,7 @@ on:
       release:
         description: "Publish a release"
         required: false
-        default: false
+        default: true
         type: boolean
       command:
         description: 'input command you want to run before build'
@@ -199,6 +199,43 @@ jobs:
           repository: shinchiro/mpv-winbuild-cmake
           path: mpv-winbuild-cmake
           fetch-depth: 0
+      - name: Patch mpv.cmake
+        run: |
+          # sed -i "s/meson setup/meson setup -Dwin32-smtc=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          # sed -i "s/-Djavascript=enabled/-Djavascript=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          # sed -i "s/-Dsdl2-gamepad=enabled/-Dsdl2-gamepad=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          # sed -i "s/-Dlibarchive=enabled/-Dlibarchive=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          # sed -i "s/-Dlibbluray=enabled/-Dlibbluray=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          # sed -i "s/-Ddvdnav=enabled/-Ddvdnav=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          # sed -i "s/-Dpdf-build=enabled/-Dpdf-build=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i "s/-Dlua=enabled/-Dlua=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
+          # Neutralizza completamente il pacchetto subrandr
+          # sed -i 's/add_subdirectory(subrandr)//' mpv-winbuild-cmake/packages/mpv.cmake
+          # sed -i 's/subrandr//g' mpv-winbuild-cmake/packages/mpv.cmake
+          # sed -i 's/subrandr//g' mpv-winbuild-cmake/packages/packages.cmake
+          # Svuota il file subrandr.cmake per evitare build
+          # echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
+          # Rimuove SOLO la riga del PDF senza toccare le altre
+          # sed -i '/mpv.pdf/d' mpv-winbuild-cmake/packages/mpv.cmake
+
+          # Disattiva SMTC
+          sed -i 's/meson setup/meson setup -Dwin32-smtc=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
+          
+          # Disattiva pdf-build in modo sicuro
+          sed -i 's/-Dpdf-build=[^ ]*/-Dpdf-build=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
+          
+          # Rimuove SOLO la riga del PDF
+          sed -i '/mpv.pdf/d' mpv-winbuild-cmake/packages/mpv.cmake
+          
+          # Rimuove subrandr da tutti i punti corretti
+          sed -i '/ExternalProject_Add(.*subrandr/d' mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/mpv.cmake
+          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/CMakeLists.txt
+          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/mpv-release.cmake
+          
+          # Svuota il file subrandr.cmake
+          echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
+          
       - name: Prepare
         run: |
           echo "sha=${{ needs.params.outputs.sha }}" >> $GITHUB_ENV
@@ -377,21 +414,35 @@ jobs:
           }
           set -x
           ${{ inputs.command }}
+      - name: Debug path
+        run: |
+          pwd ls -R .
+       
       - name: Build
         id: build
         shell: bash
         run: |
           chmod +x build.sh
           cd mpv-winbuild-cmake
-          if [[ "$(ls -A ../patch/*.patch)" ]]; then
+
+          # Applica patch PR
+          if [[ "$(ls -A ../patch/*.patch 2>/dev/null)" ]]; then
             for patch in ../patch/*.patch ; do
               git am --3way "$patch" || git am --abort
             done
           fi
+
           if [ "${{ matrix.lgpl }}" = "true" ]; then
             git am --3way ../compile-lgpl-libmpv.patch
           fi
+
+          # ESEGUI build.sh (che ora contiene la patch)
           bash ../build.sh -t '${{ matrix.bit }}' -c '${{ inputs.compiler }}' -s "${{ matrix.lgpl == true && 'true' || 'false' }}"
+
+
+
+
+
       - name: Collect logs
         if: ${{ always() }}
         run: |
@@ -588,8 +639,7 @@ jobs:
               core.summary.addList(patch_note.replace(/- \[(?<pr>#\d+)\]\((?<url>.*)\)/g,"<a href='$<url>'>$<pr></a>").replace(/`(?<code>[^`]+)`/g, '<code>$<code></code>').split('\n'));
             }
             await core.summary.addDetails('Packages Version',packages_table).write();
-
-
+   
   publish_release:
     name: Publish release
     needs: [build_mpv,params]
@@ -797,3 +847,4 @@ jobs:
           path: mpv-winbuild-cmake/clang_root
           key: llvm-
           restore-keys: llvm-
+
