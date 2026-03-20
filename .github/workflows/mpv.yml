@@ -280,10 +280,10 @@ jobs:
       - name: Restore Source Cache
         uses: actions/cache/restore@v5.0.3
         with:
-          path: ${{ github.workspace }}/mpv-winbuild-cmake/src_packages
-          key: source-${{ env.key_suffix }}
-          restore-keys: |
-            source-${{ env.restore_suffix }}
+          path: |
+            ${{ github.workspace }}/mpv-winbuild-cmake/src_packages
+            !${{ github.workspace }}/mpv-winbuild-cmake/src_packages/openssl
+
       - name: Restore Toolchain Cache
         if: ${{ env.toolchain_restore_key != '' }}
         uses: actions/cache/restore@v5.0.3
