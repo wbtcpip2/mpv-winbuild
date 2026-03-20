@@ -206,6 +206,11 @@ jobs:
           echo "cache_suffix=$(date "+%Y-%m-%d")-${{ github.run_id }}-${{ github.run_attempt }}" >> $GITHUB_ENV
           sed -i '/ccache_conf.in/d'  mpv-winbuild-cmake/CMakeLists.txt
           sed -i '/ccache/d' mpv-winbuild-cmake/exec.in
+      - name: Clean OpenSSL source to force fresh clone
+        run: |
+          rm -rf ${{ github.workspace }}/mpv-winbuild-cmake/src_packages/openssl
+          rm -rf ${{ github.workspace }}/mpv-winbuild-cmake/build32/packages/openssl-prefix
+          rm -rf ${{ github.workspace }}/mpv-winbuild-cmake/build64/packages/openssl-prefix
 
       - name: Lookup Toolchain Cache
         id: lookup_toolchain
