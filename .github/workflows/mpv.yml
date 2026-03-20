@@ -199,6 +199,10 @@ jobs:
           repository: shinchiro/mpv-winbuild-cmake
           path: mpv-winbuild-cmake
           fetch-depth: 0
+      - name: Initialize toolchain structure
+        run: |
+          cd mpv-winbuild-cmake
+          ./build.sh -t 32 -c gcc --download-only
       - name: Patch mpv.cmake
         run: |
           # sed -i "s/meson setup/meson setup -Dwin32-smtc=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
