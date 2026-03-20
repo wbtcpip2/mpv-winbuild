@@ -199,29 +199,6 @@ jobs:
           repository: wbtcpip2/mpv-winbuild-cmake
           path: mpv-winbuild-cmake
           fetch-depth: 0
-      - name: Patch mpv.cmake
-        run: |
-          sed -i "s/-Dlua=enabled/-Dlua=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          
-          # Disattiva SMTC
-          sed -i 's/meson setup/meson setup -Dwin32-smtc=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
-          
-          # Disattiva pdf-build in modo sicuro
-          sed -i 's/-Dpdf-build=[^ ]*/-Dpdf-build=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
-          
-          # Rimuove SOLO la riga del PDF
-          sed -i '/mpv.pdf/d' mpv-winbuild-cmake/packages/mpv.cmake
-          
-          # Rimuove subrandr da tutti i punti corretti
-          sed -i '/ExternalProject_Add(.*subrandr/d' mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/mpv.cmake
-          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/CMakeLists.txt
-          sed -i '/subrandr/d' mpv-winbuild-cmake/packages/mpv-release.cmake
-          
-          # Svuota il file subrandr.cmake
-          echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
-
-                   
       - name: Prepare
         run: |
           echo "sha=${{ needs.params.outputs.sha }}" >> $GITHUB_ENV
