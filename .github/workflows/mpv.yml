@@ -196,13 +196,9 @@ jobs:
       - name: Checkout toolchain
         uses: actions/checkout@v6
         with:
-          repository: shinchiro/mpv-winbuild-cmake
+          repository: wbtcpip2/mpv-winbuild-cmake
           path: mpv-winbuild-cmake
           fetch-depth: 0
-      - name: Force OpenSSL 3.2.0
-        run: |
-          sed -i 's/GIT_TAG.*/GIT_TAG openssl-3.2.0/' mpv-winbuild-cmake/packages/openssl.cmake
-          rm -rf mpv-winbuild-cmake/src_packages/openssl
       - name: Patch mpv.cmake
         run: |
           # sed -i "s/meson setup/meson setup -Dwin32-smtc=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
