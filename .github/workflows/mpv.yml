@@ -199,27 +199,10 @@ jobs:
           repository: wbtcpip2/mpv-winbuild-cmake
           path: mpv-winbuild-cmake
           fetch-depth: 0
-      - name: Clean OpenSSL source to force fresh clone
-        run: rm -rf ${{ github.workspace }}/mpv-winbuild-cmake/src_packages/openssl
       - name: Patch mpv.cmake
         run: |
-          # sed -i "s/meson setup/meson setup -Dwin32-smtc=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          # sed -i "s/-Djavascript=enabled/-Djavascript=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          # sed -i "s/-Dsdl2-gamepad=enabled/-Dsdl2-gamepad=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          # sed -i "s/-Dlibarchive=enabled/-Dlibarchive=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          # sed -i "s/-Dlibbluray=enabled/-Dlibbluray=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          # sed -i "s/-Ddvdnav=enabled/-Ddvdnav=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          # sed -i "s/-Dpdf-build=enabled/-Dpdf-build=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
           sed -i "s/-Dlua=enabled/-Dlua=disabled/" mpv-winbuild-cmake/packages/mpv.cmake
-          # Neutralizza completamente il pacchetto subrandr
-          # sed -i 's/add_subdirectory(subrandr)//' mpv-winbuild-cmake/packages/mpv.cmake
-          # sed -i 's/subrandr//g' mpv-winbuild-cmake/packages/mpv.cmake
-          # sed -i 's/subrandr//g' mpv-winbuild-cmake/packages/packages.cmake
-          # Svuota il file subrandr.cmake per evitare build
-          # echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
-          # Rimuove SOLO la riga del PDF senza toccare le altre
-          # sed -i '/mpv.pdf/d' mpv-winbuild-cmake/packages/mpv.cmake
-
+          
           # Disattiva SMTC
           sed -i 's/meson setup/meson setup -Dwin32-smtc=disabled/' mpv-winbuild-cmake/packages/mpv.cmake
           
@@ -238,9 +221,7 @@ jobs:
           # Svuota il file subrandr.cmake
           echo "" > mpv-winbuild-cmake/packages/subrandr.cmake
 
-          # Forza OpenSSL 3.2.0 (crea il file se non esiste)
-          echo "openssl=3.2.0" > mpv-winbuild-cmake/packages/versions.txt
-          
+                   
       - name: Prepare
         run: |
           echo "sha=${{ needs.params.outputs.sha }}" >> $GITHUB_ENV
