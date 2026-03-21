@@ -380,12 +380,6 @@ jobs:
       - name: Debug path
         run: |
           pwd ls -R .
-      - name: Clean libplacebo
-        run: |
-          rm -rf build32/packages/libplacebo-prefix
-          rm -rf src_packages/libplacebo
-          rm -rf build32/CMakeCache.txt
-       
       - name: Build
         id: build
         shell: bash
