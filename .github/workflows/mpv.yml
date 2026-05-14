@@ -380,16 +380,6 @@ jobs:
       - name: Debug path
         run: |
           pwd ls -R .
-      - name: Install GCC inside MSYS2
-        shell: msys2 {0}
-        run: |
-          pacman -Sy --noconfirm
-          pacman -S --noconfirm mingw-w64-i686-gcc mingw-w64-x86_64-gcc
-      - name: Set GCC as default compiler
-        shell: msys2 {0}
-        run: |
-          echo "CC=gcc" >> $GITHUB_ENV
-          echo "CXX=g++" >> $GITHUB_ENV
       
       - name: Build
         id: build
