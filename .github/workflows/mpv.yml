@@ -380,17 +380,16 @@ jobs:
       - name: Debug path
         run: |
           pwd ls -R .
-      - name: Install GCC 13
+      - name: Install GCC inside MSYS2
+        shell: msys2 {0}
         run: |
-          sudo apt update
-          sudo apt install -y gcc-13 g++-13
-      
-      - name: Set GCC 13 as default
+          pacman -Sy --noconfirm
+          pacman -S --noconfirm mingw-w64-i686-gcc mingw-w64-x86_64-gcc
+      - name: Set GCC as default compiler
+        shell: msys2 {0}
         run: |
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
-          gcc --version
-          g++ --version
+          echo "CC=gcc" >> $GITHUB_ENV
+          echo "CXX=g++" >> $GITHUB_ENV
       
       - name: Build
         id: build
