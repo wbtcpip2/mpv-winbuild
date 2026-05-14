@@ -381,13 +381,6 @@ jobs:
         run: |
           pwd ls -R .
       
-      - name: Install GCC 15
-        run: sudo apt-get update && sudo apt-get install -y gcc-15 g++-15
-      
-      - name: Set GCC 15 as default
-        run: |
-          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-15 100
-          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-15 100
       - name: Build
         id: build
         shell: bash
