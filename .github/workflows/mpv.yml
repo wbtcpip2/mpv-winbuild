@@ -195,7 +195,7 @@ jobs:
       - name: Checkout toolchain
         uses: actions/checkout@v6
         with:
-          repository: wbtcpip2/mpv-winbuild-cmake
+          repository: shinchiro/mpv-winbuild-cmake
           path: mpv-winbuild-cmake
           fetch-depth: 0
           ref: 9f8e2f3
