@@ -192,13 +192,13 @@ jobs:
           git config --global pull.rebase true
           git config --global rebase.autoStash true
           git config --global fetch.prune true
-      - uses: actions/checkout@v6
       - name: Checkout toolchain
         uses: actions/checkout@v6
         with:
           repository: wbtcpip2/mpv-winbuild-cmake
           path: mpv-winbuild-cmake
           fetch-depth: 0
+          ref: 9f8e2f3
       - name: Prepare
         run: |
           echo "sha=${{ needs.params.outputs.sha }}" >> $GITHUB_ENV
