@@ -192,13 +192,13 @@ jobs:
           git config --global pull.rebase true
           git config --global rebase.autoStash true
           git config --global fetch.prune true
+      - uses: actions/checkout@v6
       - name: Checkout toolchain
         uses: actions/checkout@v6
         with:
           repository: shinchiro/mpv-winbuild-cmake
           path: mpv-winbuild-cmake
           fetch-depth: 0
-          
       - name: Prepare
         run: |
           echo "sha=${{ needs.params.outputs.sha }}" >> $GITHUB_ENV
@@ -206,7 +206,7 @@ jobs:
           echo "cache_suffix=$(date "+%Y-%m-%d")-${{ github.run_id }}-${{ github.run_attempt }}" >> $GITHUB_ENV
           sed -i '/ccache_conf.in/d'  mpv-winbuild-cmake/CMakeLists.txt
           sed -i '/ccache/d' mpv-winbuild-cmake/exec.in
-      
+
       - name: Lookup Toolchain Cache
         id: lookup_toolchain
         uses: actions/cache/restore@v5.0.5
@@ -377,35 +377,21 @@ jobs:
           }
           set -x
           ${{ inputs.command }}
-      - name: Debug path
-        run: |
-          pwd ls -R .
-      
       - name: Build
         id: build
         shell: bash
         run: |
           chmod +x build.sh
           cd mpv-winbuild-cmake
-
-          # Applica patch PR
-          if [[ "$(ls -A ../patch/*.patch 2>/dev/null)" ]]; then
+          if [[ "$(ls -A ../patch/*.patch)" ]]; then
             for patch in ../patch/*.patch ; do
               git am --3way "$patch" || git am --abort
             done
           fi
-
           if [ "${{ matrix.lgpl }}" = "true" ]; then
             git am --3way ../compile-lgpl-libmpv.patch
           fi
-
-          # ESEGUI build.sh (che ora contiene la patch)
           bash ../build.sh -t '${{ matrix.bit }}' -c '${{ inputs.compiler }}' -s "${{ matrix.lgpl == true && 'true' || 'false' }}"
-
-
-
-
-
       - name: Collect logs
         if: ${{ always() }}
         run: |
@@ -602,7 +588,8 @@ jobs:
               core.summary.addList(patch_note.replace(/- \[(?<pr>#\d+)\]\((?<url>.*)\)/g,"<a href='$<url>'>$<pr></a>").replace(/`(?<code>[^`]+)`/g, '<code>$<code></code>').split('\n'));
             }
             await core.summary.addDetails('Packages Version',packages_table).write();
-   
+
+
   publish_release:
     name: Publish release
     needs: [build_mpv,params]
@@ -810,4 +797,3 @@ jobs:
           path: mpv-winbuild-cmake/clang_root
           key: llvm-
           restore-keys: llvm-
-
