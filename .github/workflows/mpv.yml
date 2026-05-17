@@ -198,7 +198,7 @@ jobs:
           repository: shinchiro/mpv-winbuild-cmake
           path: mpv-winbuild-cmake
           fetch-depth: 0
-          ref: 32b9e6b568bb21f47377101bb46bef77c28c9950
+          ref: 32b9e6b5
       - name: Prepare
         run: |
           echo "sha=${{ needs.params.outputs.sha }}" >> $GITHUB_ENV
