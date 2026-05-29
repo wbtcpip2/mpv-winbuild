@@ -173,7 +173,7 @@ jobs:
     needs: params
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/shinchiro/archlinux@sha256:aa8089585fad8f444f53e74e6d4cd5c5d810ad9763c6b39be06c89fbb1268833
+      image: ghcr.io/wbtcpip2/archlinux:latest
     continue-on-error: true
     strategy:
       matrix: ${{ fromJson(needs.params.outputs.matrix) }}
