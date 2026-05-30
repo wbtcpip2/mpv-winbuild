@@ -387,8 +387,8 @@ jobs:
             git am --3way ../compile-lgpl-libmpv.patch
           fi
           # Iniezione delle opzioni di tolleranza per i warning di GCC
-          export CFLAGS="-Wno-error=old-style-definition -Wno-error=implicit-function-declaration -std=gnu89"
-          export CXXFLAGS="-Wno-error=old-style-definition"
+           export CFLAGS="-Wno-error=old-style-definition -Wno-error=implicit-function-declaration -std=gnu99"
+           export CXXFLAGS="-Wno-error=old-style-definition -std=gnu++11"
           bash ../build.sh -t '${{ matrix.bit }}' -c '${{ inputs.compiler }}' -s "${{ matrix.lgpl == true && 'true' || 'false' }}"
       - name: Collect logs
         if: ${{ always() }}
