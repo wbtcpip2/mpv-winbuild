@@ -737,10 +737,6 @@ jobs:
       matrix: ${{ fromJson(needs.params.outputs.matrix_bit) }}
 
     steps:
-      - name: Prepare
-        run: |
-          sudo pacman -Syu --noconfirm
-          sudo pacman -S --noconfirm --needed git curl
       - uses: actions/checkout@v6
 
       - name: Resave Toolchain Cache
@@ -782,10 +778,6 @@ jobs:
     continue-on-error: true
 
     steps:
-      - name: Prepare
-        run: |
-          sudo pacman -Syu --noconfirm
-          sudo pacman -S --noconfirm --needed git curl
       - uses: actions/checkout@v6
       
       - name: Resave llvm cache
