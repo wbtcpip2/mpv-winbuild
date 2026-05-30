@@ -179,6 +179,28 @@ jobs:
       matrix: ${{ fromJson(needs.params.outputs.matrix) }}
 
     steps:
+        build_mpv:
+    name: Build MPV
+    needs: params
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/wbtcpip2/archlinux:latest
+    continue-on-error: true
+    strategy:
+      matrix: ${{ fromJson(needs.params.outputs.matrix) }}
+
+    steps:
+      - name: Disable pacman sandbox (fix Landlock)
+        run: echo "export PACMAN_NO_SANDBOX=1" >> $GITHUB_ENV
+
+      - name: Install Dependencies
+        run: |
+          sudo echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | sudo tee -a /etc/pacman.conf >/dev/null
+          sudo pacman-key --init
+          sudo pacman-key --populate archlinux
+          sudo pacman -Syu --noconfirm
+          ...
+
       - name: Install Dependencies
         run: |
           sudo echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | sudo tee -a /etc/pacman.conf >/dev/null
