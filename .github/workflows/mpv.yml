@@ -188,10 +188,6 @@ jobs:
           git config --global rebase.autoStash true
           git config --global fetch.prune true
       - uses: actions/checkout@v6
-      - name: Clean XZ package
-        run: |
-          rm -rf mpv-winbuild-cmake/src_packages/xz
-          rm -rf mpv-winbuild-cmake/build32/packages/xz-prefix
       - name: Checkout toolchain
         uses: actions/checkout@v6
         with:
