@@ -115,7 +115,7 @@ index 5b73db3..492f739 100644
 +        -DUSE_SSLS_EXPORT=ON
 +        -DCURL_USE_PKGCONFIG=ON
 +        -DCMAKE_DISABLE_FIND_PACKAGE_Perl=ON
-+        "-DCMAKE_C_FLAGS='-lz -lbrotlienc -lbrotlidec -lbrotlicommon -lzstd -lcrypt32 -lsecur32'"
++        -DCMAKE_C_FLAGS="-lz -lbrotlienc -lbrotlidec -lbrotlicommon -lzstd -lcrypt32 -lsecur32"
 +    BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
 +    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install
      LOG_DOWNLOAD 1 LOG_UPDATE 1 LOG_CONFIGURE 1 LOG_BUILD 1 LOG_INSTALL 1
