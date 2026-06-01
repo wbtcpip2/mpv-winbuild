@@ -188,6 +188,11 @@ jobs:
           git config --global rebase.autoStash true
           git config --global fetch.prune true
       - uses: actions/checkout@v6
+      - name: Clean Opus old sources
+        run: |
+          rm -rf mpv-winbuild-cmake/build32
+          rm -rf mpv-winbuild-cmake/src_packages/opus
+          rm -rf mpv-winbuild-cmake/build32/packages/opus-prefix
       - name: Checkout toolchain
         uses: actions/checkout@v6
         with:
